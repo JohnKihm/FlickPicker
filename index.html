@@ -10,13 +10,35 @@
 </head>
 
 <body>
-    <header></header>
+  <header>
+    <h1>Welcome to FlickPicker</h1>
+    <!-- <img src="./assets/images/Film.jpg" alt="Film Banner"/> -->
+  </header>
     <main>
         <div>
-            <form>
+            <form id="search-entry">
                 <div>
                     <label>Genre</label>
-                    <input id="genre" type="text"/>
+                    <select id="genre">
+                        <option value="28">Action</option>
+                        <option value="12">Adventure</option>
+                        <option value="16">Animation</option>
+                        <option value="35">Comedy</option>
+                        <option value="80">Crime</option>
+                        <option value="99">Documentary</option>
+                        <option value="18">Drama</option>
+                        <option value="10751">Family</option>
+                        <option value="14">Fantasy</option>
+                        <option value="36">History</option>
+                        <option value="27">Horror</option>
+                        <option value="10402">Musical</option>
+                        <option value="9648">Mystery</option>
+                        <option value="10749">Romance</option>
+                        <option value="878">Science Fiction</option>
+                        <option value="53">Thriller</option>
+                        <option value="10752">War</option>
+                        <option value="37">Western</option>
+                    </select>
                 </div>
                 <div>
                     <label>Release Year</label>
@@ -43,8 +65,14 @@
                 </div>
             </form>
         </div>
+        <div id="results-container">Search Results</div>
     </main>
-    <footer></footer>
+    <!-- place for history-->
+    <nav>Search History</nav>
+    <footer>
+      <p>Created by The Four Corners ~ Est. 2024</p>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="./assets/js/script.js"></script>
 </body>
 </html>
