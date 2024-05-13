@@ -90,6 +90,7 @@ function getApi(event) {
 //    .catch(err=>console.log(err));
 }
 
+// Takes the results from getAPI and displays a card for each result with the title, release date, and poster
 function displayResults(results) {
   const resultsContainer = $('#results-container');
   resultsContainer.empty();
