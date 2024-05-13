@@ -40,7 +40,7 @@ function getApi(event) {
     director:directorInputEl.value,
     score:scoreInputEl.value
   }
-  const requestActorUrl = `https://api.themoviedb.org/3/search/person?query=Harrison%20Ford&api_key=7ef17cd5f1f31676a0f79646b09ad3fc`
+  const requestActorUrl = `https://api.themoviedb.org/3/search/person?query=${searchInput.actor}&api_key=7ef17cd5f1f31676a0f79646b09ad3fc`
  
   fetch(requestActorUrl,options)
   .then(function (response) {
