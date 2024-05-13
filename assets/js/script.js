@@ -97,8 +97,8 @@ function displayResults(results) {
 
   for (result of results) {
     console.log(result.title);
-    const displayCard = $('<div>');
-    const cardHeader = $('<div>');
+    const displayCard = $('<div>').addClass('rounded overflow-hidden shadow-lg mx-3');
+    const cardHeader = $('<div>').addClass('font-bold text-xl text-center text-wrap');
     const title = $('<h3>').text(result.title);
     const releaseDate = $('<h4>').text(result.release_date);
     const cardBody = $('<div>');
