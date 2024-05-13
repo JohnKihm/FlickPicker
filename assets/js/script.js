@@ -60,6 +60,7 @@ function getApi(event) {
         .then(function (data) {
           
           console.log(data);
+          displayResults(data.results);
 })
 
       
@@ -88,4 +89,25 @@ function getApi(event) {
 // Need .catch for errors?
 //    .catch(err=>console.log(err));
 }
+
+function displayResults(results) {
+  const resultsContainer = $('#results-container');
+  resultsContainer.empty();
+
+  for (result of results) {
+    console.log(result.title);
+    const displayCard = $('<div>');
+    const cardHeader = $('<div>');
+    const title = $('<h3>').text(result.title);
+    const releaseDate = $('<h4>').text(result.release_date);
+    const cardBody = $('<div>');
+    const poster = $('<img>').addClass('poster').attr('src', `https://image.tmdb.org/t/p/w500${result.poster_path}`);
+
+    cardHeader.append(title, releaseDate);
+    cardBody.append(poster);
+    displayCard.append(cardHeader, cardBody);
+    resultsContainer.append(displayCard);
+  }
+}
+
 entryForm.addEventListener('submit', getApi);
