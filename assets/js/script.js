@@ -133,6 +133,9 @@ function loadRecentSearches() {
 }
 
 function saveRecentSearches(recentSearches) {
+  if (recentSearches.length > 5) {
+    recentSearches.splice(0, (recentSearches.length - 5));
+  }
   localStorage.setItem('recentSearches', JSON.stringify(recentSearches));
 }
 
@@ -141,7 +144,7 @@ function displayRecentSearches() {
   recentSearchesContainer.empty();
   const recentSearches = loadRecentSearches();
   for (search of recentSearches) {
-    const searchCard = $('<div>');
+    const searchCard = $('<div>').addClass('my-3 flex flex-col');
     const searchGenre = $('<p>').text(`Genre: ${search.genre}`);
     const searchYear = $('<p>').text(`Release Year: ${search.year}`);
     const searchActor = $('<p>').text(`Actor: ${search.actor}`);
