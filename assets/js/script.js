@@ -86,12 +86,13 @@ async function displayResults(results) {
   resultsContainer.empty();
 
   for (result of results) {
-    const displayCard = $('<div>').addClass('rounded overflow-hidden shadow-lg mx-3');
+    const displayCard = $('<div>').addClass('rounded border-2 border-black shadow-lg mx-3 my-2 flex');
     const cardHeader = $('<div>').addClass('font-bold text-xl text-center text-wrap');
     const title = $('<h3>').text(result.title);
     const releaseDate = $('<h4>').text(result.release_date);
-    const cardBody = $('<div>');
-    const poster = $('<img>').addClass('poster').attr('src', `https://image.tmdb.org/t/p/w500${result.poster_path}`);
+    const cardBody = $('<div>').addClass('px-2');
+    const cardMain = $('<div>').addClass('w-3/4 flex flex-col justify-around');
+    const poster = $('<img>').addClass('w-1/4 poster').attr('src', `https://image.tmdb.org/t/p/w500${result.poster_path}`);
     
     try {
       const requestOmdbUrl = `http://www.omdbapi.com/?apikey=79711389&t=${result.title}`;
@@ -115,8 +116,8 @@ async function displayResults(results) {
 
 
     cardHeader.append(title, releaseDate);
-    cardBody.append(poster);
-    displayCard.append(cardHeader, cardBody);
+    cardMain.append(cardHeader, cardBody);
+    displayCard.append(poster, cardMain);
     resultsContainer.append(displayCard);
     
 
