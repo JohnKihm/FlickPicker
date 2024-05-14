@@ -14,9 +14,16 @@ const options = {
     }
   };
 
+  
   // The getActorid function allows the entry of an Actor name, returns the actor's IMDB ID#, and passes the ID# to the getAPI fun
 
-function getActorid (actorName) {
+  document.getElementById('mode-toggle').addEventListener('click', function () {
+    document.body.classList.toggle('dark-mode');
+    const header = document.querySelector('header');
+    header.classList.toggle('dark:bg-gray-900');
+  });
+
+  function getActorid (actorName) {
        
 //     fetch(requestUrl,options)
 //     .then(function (response) {
@@ -112,3 +119,5 @@ function displayResults(results) {
 }
 
 entryForm.addEventListener('submit', getApi);
+
+

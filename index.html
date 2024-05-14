@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
+<head class="light-mode">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
@@ -10,10 +10,16 @@
   <title>FlickPicker</title>
 </head>
 
-<body>
-  <header>
-    <h1>Welcome to FlickPicker</h1>
-    <img src="./assets/images/Film.jpg" alt="Film Banner"/>
+
+
+<body class="light-mode">
+    <header class="flex justify-between items-center px-4 py-3">
+    <div>
+        <h1 class="text-xl font-bold text-black-800 dark:text-white">Welcome to FlickPicker</h1>
+    </div>
+    <div>
+        <button id="mode-toggle" class="px-4 py-2 bg-indigo-500 text-white rounded-md">Eye Strain Deactivator</button>
+     </div>
   </header>
     <main>
         <div>
