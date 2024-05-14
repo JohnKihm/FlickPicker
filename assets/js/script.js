@@ -14,6 +14,7 @@ const options = {
     }
   };
 
+
 // The getID function allows the entry of a name, returns the person's IMDB ID#, and passes the ID# to the getAPI function
 async function getID (name) {
   try {
@@ -33,6 +34,7 @@ async function getID (name) {
 async function getApi(event) {
     event.preventDefault();
 
+
   const searchInput = {
     genre:genreInputEl.value,
     year:yearInputEl.value,
@@ -40,6 +42,7 @@ async function getApi(event) {
     director:directorInputEl.value,
     score:scoreInputEl.value
   }
+
 
   if (!searchInput.actor) {
     searchInput.actor = '';
@@ -117,3 +120,4 @@ async function displayResults(results) {
 
 
 entryForm.addEventListener('submit', getApi);
+

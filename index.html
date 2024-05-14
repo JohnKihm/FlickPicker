@@ -13,15 +13,18 @@
 <body>
   <header>
     <h1>Welcome to FlickPicker</h1>
-    <img src="./assets/images/Film.jpg" alt="Film Banner"/>
+    <!-- <img src="./assets/images/Film.jpg" alt="Film Banner"/> -->
+    <!-- Dark mode button here -->
   </header>
     <main>
         <div>
             <form id="search-entry">
+
                 <div class="my-2">
                     <label>Genre</label>
                     <select id="genre" class="border-2 rounded-md">
                         <option value="">Any</option>
+
                         <option value="28">Action</option>
                         <option value="12">Adventure</option>
                         <option value="16">Animation</option>
@@ -67,7 +70,9 @@
                 </div>
             </form>
         </div>
-        <div id="results-container" class="flex flex-wrap"></div>
+        <div id="results-container">Search Results</div>
+            <!-- place for history-->
+            <nav>Search History</nav>
     </main>
     <footer>
       <p>Created by The Four Corners ~ Est. 2024</p>
