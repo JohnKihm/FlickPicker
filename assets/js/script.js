@@ -95,7 +95,7 @@ async function displayResults(results) {
     const poster = $('<img>').addClass('w-1/4 poster').attr('src', `https://image.tmdb.org/t/p/w500${result.poster_path}`);
     
     try {
-      const requestOmdbUrl = `http://www.omdbapi.com/?apikey=79711389&t=${result.title}`;
+      const requestOmdbUrl = `https://www.omdbapi.com/?apikey=79711389&t=${result.title}`;
       const response = await fetch(requestOmdbUrl);
       if (!response.ok) {
         throw new Error(`HTTP error: ${response.status}`);
@@ -144,7 +144,7 @@ function displayRecentSearches() {
   recentSearchesContainer.empty();
   const recentSearches = loadRecentSearches();
   for (search of recentSearches) {
-    const searchCard = $('<div>').addClass('my-3 flex flex-col');
+    const searchCard = $('<div>').addClass('my-3 flex flex-col w-1/5');
     const searchGenre = $('<p>').text(`Genre: ${search.genre}`);
     const searchYear = $('<p>').text(`Release Year: ${search.year}`);
     const searchActor = $('<p>').text(`Actor: ${search.actor}`);
