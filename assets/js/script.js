@@ -17,12 +17,6 @@ const options = {
   
   // The getActorid function allows the entry of an Actor name, returns the actor's IMDB ID#, and passes the ID# to the getAPI fun
 
-  document.getElementById('mode-toggle').addEventListener('click', function () {
-    document.body.classList.toggle('dark-mode');
-    const header = document.querySelector('header');
-    header.classList.toggle('dark:bg-gray-900');
-  });
-
   function getActorid (actorName) {
        
 //     fetch(requestUrl,options)
@@ -118,6 +112,11 @@ function displayResults(results) {
   }
 }
 
+document.getElementById('mode-toggle').addEventListener('click', function () {
+  document.body.classList.toggle('dark-mode');
+  const header = document.querySelector('header');
+  header.classList.toggle('dark:bg-gray-900');
+});
 entryForm.addEventListener('submit', getApi);
 
 
