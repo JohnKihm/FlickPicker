@@ -55,15 +55,18 @@ async function getApi(event) {
     searchInput.director = await getID(searchInput.director);
   }
 
-  const requestUrl = `https://api.themoviedb.org/3/discover/movie?certification_country=United%20States&include_adult=false&include_video=false&language=en-US&page=1&sort_by=original_title.desc&with_genres=${searchInput.genre}&primary_release_year=${searchInput.year}&with_cast=${searchInput.actor}://api.themoviedb.org/3/discover/movie?`;
-  fetch(requestUrl,options)
-  .then(function (response) {
-    return response.json();
-  })
-  .then(function (data) {
-    console.log(data);
+  try {
+    const requestUrl = `https://api.themoviedb.org/3/discover/movie?certification_country=United%20States&include_adult=false&include_video=false&language=en-US&page=1&sort_by=original_title.desc&with_genres=${searchInput.genre}&primary_release_year=${searchInput.year}&with_cast=${searchInput.actor}&with_crew=${searchInput.director}://api.themoviedb.org/3/discover/movie?`;
+    const response = await fetch(requestUrl,options);
+    if (!response.ok) {
+      throw new Error(`HTTP error: ${response.status}`);
+    }
+    const data = await response.json();
     displayResults(data.results);
-  })
+  }
+  catch (error) {
+    console.error(error);
+  }
 }
 // Need .catch for errors?
 //    .catch(err=>console.log(err));
