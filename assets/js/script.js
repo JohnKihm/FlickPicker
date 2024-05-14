@@ -23,8 +23,6 @@ async function getID (name) {
       throw new Error(`HTTP error: ${response.status}`);
     }
     const data = await response.json();
-    console.log(data);
-    console.log(data.results[0].id);
     return data.results[0].id;
   }
   catch (error) {
@@ -56,12 +54,14 @@ async function getApi(event) {
   }
 
   try {
-    const requestUrl = `https://api.themoviedb.org/3/discover/movie?certification_country=United%20States&include_adult=false&include_video=false&language=en-US&page=1&sort_by=original_title.desc&with_genres=${searchInput.genre}&primary_release_year=${searchInput.year}&with_cast=${searchInput.actor}&with_crew=${searchInput.director}://api.themoviedb.org/3/discover/movie?`;
+    const requestUrl = `https://api.themoviedb.org/3/discover/movie?certification_country=United%20States&include_adult=false&include_video=false&language=en-US&page=1&sort_by=original_title.desc&with_genres=${searchInput.genre}&primary_release_year=${searchInput.year}&with_cast=${searchInput.actor}&with_crew=${searchInput.director}`;
+    console.log(requestUrl);
     const response = await fetch(requestUrl,options);
     if (!response.ok) {
       throw new Error(`HTTP error: ${response.status}`);
     }
     const data = await response.json();
+    console.log(data);
     displayResults(data.results);
   }
   catch (error) {
@@ -73,24 +73,47 @@ async function getApi(event) {
 
 
 // Takes the results from getAPI and displays a card for each result with the title, release date, and poster
-function displayResults(results) {
+async function displayResults(results) {
   const resultsContainer = $('#results-container');
   resultsContainer.empty();
 
   for (result of results) {
-    console.log(result.title);
     const displayCard = $('<div>').addClass('rounded overflow-hidden shadow-lg mx-3');
     const cardHeader = $('<div>').addClass('font-bold text-xl text-center text-wrap');
     const title = $('<h3>').text(result.title);
     const releaseDate = $('<h4>').text(result.release_date);
     const cardBody = $('<div>');
     const poster = $('<img>').addClass('poster').attr('src', `https://image.tmdb.org/t/p/w500${result.poster_path}`);
+    
+    try {
+      const requestOmdbUrl = `http://www.omdbapi.com/?apikey=79711389&t=${result.title}`;
+      const response = await fetch(requestOmdbUrl);
+      if (!response.ok) {
+        throw new Error(`HTTP error: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log(data);
+
+      const awards = $('<div>').text(data.Awards);
+
+      cardBody.append(awards);
+      //console.log(data.results[0].id);
+      //return data.results[0].id;
+    }
+    catch (error) {
+      console.error(error);
+    }
+    
+
 
     cardHeader.append(title, releaseDate);
     cardBody.append(poster);
     displayCard.append(cardHeader, cardBody);
     resultsContainer.append(displayCard);
+    
+
   }
 }
+
 
 entryForm.addEventListener('submit', getApi);
