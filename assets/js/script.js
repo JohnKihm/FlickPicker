@@ -43,6 +43,11 @@ async function getApi(event) {
     score:scoreInputEl.value
   }
 
+  const recentSearches = loadRecentSearches();
+  recentSearches.push(searchInput);
+  saveRecentSearches(recentSearches);
+  displayRecentSearches();
+
   if (!searchInput.actor) {
     searchInput.actor = '';
   } else {
@@ -92,5 +97,36 @@ function displayResults(results) {
     resultsContainer.append(displayCard);
   }
 }
+
+function loadRecentSearches() {
+  let recentSearches = JSON.parse(localStorage.getItem('recentSearches'));
+  if (!recentSearches) {
+    recentSearches = []
+  }
+  return recentSearches;
+}
+
+function saveRecentSearches(recentSearches) {
+  localStorage.setItem('recentSearches', JSON.stringify(recentSearches));
+}
+
+function displayRecentSearches() {
+  const recentSearchesContainer = $('#recent-searches-container');
+  recentSearchesContainer.empty();
+  const recentSearches = loadRecentSearches();
+  for (search of recentSearches) {
+    const searchCard = $('<div>');
+    const searchGenre = $('<p>').text(`Genre: ${search.genre}`);
+    const searchYear = $('<p>').text(`Release Year: ${search.year}`);
+    const searchActor = $('<p>').text(`Actor: ${search.actor}`);
+    const searchDirector = $('<p>').text(`Director: ${search.director}`);
+    const searchScore = $('<p>').text(`Score: ${search.score}`);
+
+    searchCard.append(searchGenre, searchYear, searchActor, searchDirector, searchScore);
+    recentSearchesContainer.append(searchCard);
+  }
+}
+
+displayRecentSearches();
 
 entryForm.addEventListener('submit', getApi);
