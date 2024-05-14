@@ -14,25 +14,27 @@ const options = {
     }
   };
 
-  
-  // The getActorid function allows the entry of an Actor name, returns the actor's IMDB ID#, and passes the ID# to the getAPI fun
 
-  function getActorid (actorName) {
-       
-//     fetch(requestUrl,options)
-//     .then(function (response) {
-//       return response.json();
-//     })
-//     .then(function (data) {
-      
-//       console.log(data);
-// })
+
+// The getID function allows the entry of a name, returns the person's IMDB ID#, and passes the ID# to the getAPI function
+async function getID (name) {
+  try {
+    const requestUrl = `https://api.themoviedb.org/3/search/person?query=${name}&api_key=7ef17cd5f1f31676a0f79646b09ad3fc`;
+    const response = await fetch(requestUrl, options);
+    if (!response.ok) {
+      throw new Error(`HTTP error: ${response.status}`);
+    }
+    const data = await response.json();
+    return data.results[0].id;
+  }
+  catch (error) {
+    console.error(error);
+  }
 }
 
-function getApi(event) {
+async function getApi(event) {
     event.preventDefault();
-  
-    getActorid();
+
 
   const searchInput = {
     genre:genreInputEl.value,
@@ -41,76 +43,82 @@ function getApi(event) {
     director:directorInputEl.value,
     score:scoreInputEl.value
   }
-  const requestActorUrl = `https://api.themoviedb.org/3/search/person?query=${searchInput.actor}&api_key=7ef17cd5f1f31676a0f79646b09ad3fc`
- 
-  fetch(requestActorUrl,options)
-  .then(function (response) {
-    return response.json();
-  })
-  .then(function (data) {
-      
-      console.log(data.results[0].id);
-      const actorId = data.results[0].id;
-      
-      const requestUrl = `https://api.themoviedb.org/3/discover/movie?certification_country=United%20States&include_adult=false&include_video=false&language=en-US&page=1&sort_by=original_title.desc&with_genres=${searchInput.genre}&primary_release_year=${searchInput.year}&with_cast=${actorId}://api.themoviedb.org/3/discover/movie?`;
-      
-      fetch(requestUrl,options)
-        .then(function (response) {
-          return response.json();
-        })
-        .then(function (data) {
-          
-          console.log(data);
-          displayResults(data.results);
-})
-
-      
 
 
-    //   for (element of data) {
-    //     const searchGenre = document.createElement('h3');
-    //     const searchYear = document.createElement('p');
-    //     const searchActor = document.createElement('p');
-    //     const searchDirector = document.createElement('p');
-    //     const searchRTScore = document.createElement('p');
+  if (!searchInput.actor) {
+    searchInput.actor = '';
+  } else {
+    searchInput.actor = await getID(searchInput.actor);
+  }
 
-    //     searchGenre.textContent = element.genre;
-    //     searchYear.textContent = element.year;
-    //     searchActor.textContent = element.actor;
-    //     searchDirector.textContent = element.director;
-    //     searchRTScore.textContent = element.rt_score;
+  if (!searchInput.director) {
+    searchInput.director = '';
+  } else {
+    searchInput.director = await getID(searchInput.director);
+  }
 
-    //     entryForm.append(searchGenre);
-    //     entryForm.append(searchYear);
-    //     entryForm.append(searchDirector);
-    //     entryForm.append(searchActor);
-    //     entryForm.append(searchRTScore);
-    //   }
-    });
+  try {
+    const requestUrl = `https://api.themoviedb.org/3/discover/movie?certification_country=United%20States&include_adult=false&include_video=false&language=en-US&page=1&sort_by=original_title.desc&with_genres=${searchInput.genre}&primary_release_year=${searchInput.year}&with_cast=${searchInput.actor}&with_crew=${searchInput.director}`;
+    console.log(requestUrl);
+    const response = await fetch(requestUrl,options);
+    if (!response.ok) {
+      throw new Error(`HTTP error: ${response.status}`);
+    }
+    const data = await response.json();
+    console.log(data);
+    displayResults(data.results);
+  }
+  catch (error) {
+    console.error(error);
+  }
+}
 // Need .catch for errors?
 //    .catch(err=>console.log(err));
-}
+
 
 // Takes the results from getAPI and displays a card for each result with the title, release date, and poster
-function displayResults(results) {
+async function displayResults(results) {
   const resultsContainer = $('#results-container');
   resultsContainer.empty();
 
   for (result of results) {
-    console.log(result.title);
     const displayCard = $('<div>').addClass('rounded overflow-hidden shadow-lg mx-3');
     const cardHeader = $('<div>').addClass('font-bold text-xl text-center text-wrap');
     const title = $('<h3>').text(result.title);
     const releaseDate = $('<h4>').text(result.release_date);
     const cardBody = $('<div>');
     const poster = $('<img>').addClass('poster').attr('src', `https://image.tmdb.org/t/p/w500${result.poster_path}`);
+    
+    try {
+      const requestOmdbUrl = `http://www.omdbapi.com/?apikey=79711389&t=${result.title}`;
+      const response = await fetch(requestOmdbUrl);
+      if (!response.ok) {
+        throw new Error(`HTTP error: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log(data);
+
+      const awards = $('<div>').text(data.Awards);
+
+      cardBody.append(awards);
+      //console.log(data.results[0].id);
+      //return data.results[0].id;
+    }
+    catch (error) {
+      console.error(error);
+    }
+    
+
 
     cardHeader.append(title, releaseDate);
     cardBody.append(poster);
     displayCard.append(cardHeader, cardBody);
     resultsContainer.append(displayCard);
+    
+
   }
 }
+
 
 document.getElementById('mode-toggle').addEventListener('click', function () {
   document.body.classList.toggle('dark-mode');
@@ -118,5 +126,3 @@ document.getElementById('mode-toggle').addEventListener('click', function () {
   header.classList.toggle('dark:bg-gray-900');
 });
 entryForm.addEventListener('submit', getApi);
-
-
