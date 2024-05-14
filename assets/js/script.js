@@ -15,6 +15,7 @@ const options = {
   };
 
 
+
 // The getID function allows the entry of a name, returns the person's IMDB ID#, and passes the ID# to the getAPI function
 async function getID (name) {
   try {
@@ -119,5 +120,9 @@ async function displayResults(results) {
 }
 
 
+document.getElementById('mode-toggle').addEventListener('click', function () {
+  document.body.classList.toggle('dark-mode');
+  const header = document.querySelector('header');
+  header.classList.toggle('dark:bg-gray-900');
+});
 entryForm.addEventListener('submit', getApi);
-
