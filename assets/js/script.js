@@ -46,6 +46,13 @@ async function getApi(event) {
     comparator:comparatorInputEl.value
   }
 
+  $('#genre').val('');
+  $('#year').val('');
+  $('#actor').val('');
+  $('#director').val('');
+  $('#score').val('');
+  $('#above-below').val('');
+  
   const recentSearches = loadRecentSearches();
   recentSearches.push(searchInput);
   saveRecentSearches(recentSearches);
