@@ -71,10 +71,7 @@ async function getApi(event) {
     }
     const data = await response.json();
 
-    console.log(data);
-    //displayResults(data.results);
-
-    if (data.results.total_results) {
+    if (data.total_results) {
       displayResults(data.results);
     }
     else {
@@ -115,7 +112,6 @@ async function displayResults(results) {
         throw new Error(`HTTP error: ${response.status}`);
       }
       const data = await response.json();
-      console.log(data);
       const imdbRating = data.imdbRating;
       const recentSearches = loadRecentSearches();
       const searchScore = recentSearches[(recentSearches.length - 1)].score;
