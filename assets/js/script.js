@@ -5,6 +5,7 @@ const yearInputEl = document.getElementById('year');
 const actorInputEl = document.getElementById('actor');
 const directorInputEl = document.getElementById('director');
 const scoreInputEl = document.getElementById('score');
+const comparatorInputEl = document.getElementById('above-below');
 
 const options = {
     method: 'GET',
@@ -41,7 +42,8 @@ async function getApi(event) {
     year:yearInputEl.value,
     actor:actorInputEl.value,
     director:directorInputEl.value,
-    score:scoreInputEl.value
+    score:scoreInputEl.value,
+    comparator:comparatorInputEl.value
   }
 
   const recentSearches = loadRecentSearches();
@@ -63,21 +65,17 @@ async function getApi(event) {
 
   try {
     const requestUrl = `https://api.themoviedb.org/3/discover/movie?certification_country=United%20States&include_adult=false&include_video=false&language=en-US&page=1&sort_by=original_title.desc&with_genres=${searchInput.genre}&primary_release_year=${searchInput.year}&with_cast=${searchInput.actor}&with_crew=${searchInput.director}`;
-    console.log(requestUrl);
     const response = await fetch(requestUrl,options);
     if (!response.ok) {
       throw new Error(`HTTP error: ${response.status}`);
     }
     const data = await response.json();
-    console.log(data);
     displayResults(data.results);
   }
   catch (error) {
     console.error(error);
   }
 }
-// Need .catch for errors?
-//    .catch(err=>console.log(err));
 
 
 // Takes the results from getAPI and displays a card for each result with the title, release date, and poster
@@ -102,25 +100,45 @@ async function displayResults(results) {
       }
       const data = await response.json();
       console.log(data);
-
-      const awards = $('<div>').text(data.Awards);
-
-      cardBody.append(awards);
-      //console.log(data.results[0].id);
-      //return data.results[0].id;
+      const imdbRating = data.imdbRating;
+      const recentSearches = loadRecentSearches();
+      const searchScore = recentSearches[(recentSearches.length - 1)].score;
+      const searchComparator = recentSearches[(recentSearches.length - 1)].comparator;
+      const displayScore = $('<div>').text(`IMDB Rating: ${imdbRating}`);
+      let awards = data.Awards;
+      if (awards === 'N/A') {
+        awards = 'No award wins or nominations';
+      }
+      const displayAwards = $('<div>').text(awards);
+      if (searchScore) {
+        if (searchComparator === 'Above') {
+          if (Number(imdbRating) >= Number(searchScore)) {
+            cardHeader.append(title, releaseDate);
+            cardBody.append(displayScore, displayAwards);
+            cardMain.append(cardHeader, cardBody);
+            displayCard.append(poster, cardMain);
+            resultsContainer.append(displayCard);
+          }
+        } else if (searchComparator === 'Below') {
+          if (Number(imdbRating) <= Number(searchScore)) {
+            cardHeader.append(title, releaseDate);
+            cardBody.append(displayScore, displayAwards);
+            cardMain.append(cardHeader, cardBody);
+            displayCard.append(poster, cardMain);
+            resultsContainer.append(displayCard);
+        }
+      }
+    } else if (data.Response === 'True') {
+      cardHeader.append(title, releaseDate);
+      cardBody.append(displayScore, displayAwards);
+      cardMain.append(cardHeader, cardBody);
+      displayCard.append(poster, cardMain);
+      resultsContainer.append(displayCard);
+      }
     }
     catch (error) {
       console.error(error);
     }
-    
-
-
-    cardHeader.append(title, releaseDate);
-    cardMain.append(cardHeader, cardBody);
-    displayCard.append(poster, cardMain);
-    resultsContainer.append(displayCard);
-    
-
   }
 }
 
@@ -149,7 +167,7 @@ function displayRecentSearches() {
     const searchYear = $('<p>').text(`Release Year: ${search.year}`);
     const searchActor = $('<p>').text(`Actor: ${search.actor}`);
     const searchDirector = $('<p>').text(`Director: ${search.director}`);
-    const searchScore = $('<p>').text(`Score: ${search.score}`);
+    const searchScore = $('<p>').text(`Score: ${search.comparator + ' ' + search.score}`);
 
     searchCard.append(searchGenre, searchYear, searchActor, searchDirector, searchScore);
     recentSearchesContainer.append(searchCard);
