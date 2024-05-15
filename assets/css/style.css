@@ -147,5 +147,13 @@ footer {
 }
 
 .dark-mode #results-container {
-    background-color: #374151; 
+    background-color: #374151;
+    input, select {
+        color: #000000; 
+      } 
+}
+
+.dark-mode #above-below {
+    color: #000000;
+   
 }
