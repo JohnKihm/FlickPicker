@@ -72,7 +72,7 @@ async function getApi(event) {
   }
 
   try {
-    const requestUrl = `https://api.themoviedb.org/3/discover/movie?certification_country=United%20States&include_adult=false&include_video=false&language=en-US&page=1&sort_by=original_title.desc&with_genres=${searchInput.genreID}&primary_release_year=${searchInput.year}&with_cast=${searchInput.actor}&with_crew=${searchInput.director}`;
+    const requestUrl = `https://api.themoviedb.org/3/discover/movie?certification_country=United%20States&include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_genres=${searchInput.genreID}&primary_release_year=${searchInput.year}&with_cast=${searchInput.actor}&with_crew=${searchInput.director}`;
     const response = await fetch(requestUrl,options);
     if (!response.ok) {
       throw new Error(`HTTP error: ${response.status}`);
