@@ -108,3 +108,44 @@ footer {
 .poster {
     max-width: 150px;
 }
+
+.light-mode body {
+    background-color: #ffffff; 
+    color: #000000; 
+}
+
+.light-mode header,
+.light-mode footer {
+    background-color: firebrick; 
+}
+
+.light-mode input,
+.light-mode select,
+.light-mode button {
+    border-color: gray; 
+}
+
+
+.dark-mode body {
+    background-color: #1f2937; 
+    color: #f5f7fa; 
+}
+
+.dark-mode header,
+.dark-mode footer {
+    background-color: #374151; 
+}
+
+.dark-mode input,
+.dark-mode select,
+.dark-mode button {
+    border-color: #6b7280; 
+}
+
+.dark-mode #search-entry {
+    background-color: #374151; 
+}
+
+.dark-mode #results-container {
+    background-color: #374151; 
+}
