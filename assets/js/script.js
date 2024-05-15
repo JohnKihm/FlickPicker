@@ -38,7 +38,8 @@ async function getApi(event) {
 
 
   const searchInput = {
-    genre:genreInputEl.value,
+    genreID:genreInputEl.value.split(':')[0],
+    genreName: genreInputEl.value.split(':')[1],
     year:yearInputEl.value,
     actor:actorInputEl.value,
     director:directorInputEl.value,
@@ -71,7 +72,7 @@ async function getApi(event) {
   }
 
   try {
-    const requestUrl = `https://api.themoviedb.org/3/discover/movie?certification_country=United%20States&include_adult=false&include_video=false&language=en-US&page=1&sort_by=original_title.desc&with_genres=${searchInput.genre}&primary_release_year=${searchInput.year}&with_cast=${searchInput.actor}&with_crew=${searchInput.director}`;
+    const requestUrl = `https://api.themoviedb.org/3/discover/movie?certification_country=United%20States&include_adult=false&include_video=false&language=en-US&page=1&sort_by=original_title.desc&with_genres=${searchInput.genreID}&primary_release_year=${searchInput.year}&with_cast=${searchInput.actor}&with_crew=${searchInput.director}`;
     const response = await fetch(requestUrl,options);
     if (!response.ok) {
       throw new Error(`HTTP error: ${response.status}`);
@@ -182,13 +183,13 @@ function displayRecentSearches() {
   const recentSearches = loadRecentSearches();
   for (search of recentSearches) {
     const searchCard = $('<div>').addClass('my-3 flex flex-col w-1/5');
-    const searchGenre = $('<p>').text(`Genre: ${search.genre}`);
+    const searchGenre = $('<p>').text(`Genre: ${search.genreName}`);
     const searchYear = $('<p>').text(`Release Year: ${search.year}`);
     const searchActor = $('<p>').text(`Actor: ${search.actor}`);
     const searchDirector = $('<p>').text(`Director: ${search.director}`);
     const searchScore = $('<p>').text(`Score: ${search.comparator + ' ' + search.score}`);
 
-    if (search.genre){
+    if (search.genreName){
       searchCard.append(searchGenre);
     }
     if (search.year){
@@ -203,7 +204,7 @@ function displayRecentSearches() {
     if (search.score){
       searchCard.append(searchScore);
     }
-    
+
     recentSearchesContainer.append(searchCard);
   }
 }
