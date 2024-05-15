@@ -52,7 +52,7 @@ async function getApi(event) {
   $('#director').val('');
   $('#score').val('');
   $('#above-below').val('');
-  
+
   const recentSearches = loadRecentSearches();
   recentSearches.push(searchInput);
   saveRecentSearches(recentSearches);
@@ -188,7 +188,22 @@ function displayRecentSearches() {
     const searchDirector = $('<p>').text(`Director: ${search.director}`);
     const searchScore = $('<p>').text(`Score: ${search.comparator + ' ' + search.score}`);
 
-    searchCard.append(searchGenre, searchYear, searchActor, searchDirector, searchScore);
+    if (search.genre){
+      searchCard.append(searchGenre);
+    }
+    if (search.year){
+      searchCard.append(searchYear);
+    }
+    if (search.actor){
+      searchCard.append(searchActor);
+    }
+    if (search.director){
+      searchCard.append(searchDirector);
+    }
+    if (search.score){
+      searchCard.append(searchScore);
+    }
+    
     recentSearchesContainer.append(searchCard);
   }
 }
