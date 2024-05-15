@@ -70,13 +70,29 @@ async function getApi(event) {
       throw new Error(`HTTP error: ${response.status}`);
     }
     const data = await response.json();
-    displayResults(data.results);
+
+    console.log(data);
+    //displayResults(data.results);
+
+    if (data.results.total_results) {
+      displayResults(data.results);
+    }
+    else {
+      throw new Error(`No Results Found: ${response.status}`); 
+    }
   }
   catch (error) {
     console.error(error);
+    const dialog = document.querySelector("dialog");
+    const closeButton = document.querySelector("dialog button");
+ 
+    dialog.showModal();
+
+    closeButton.addEventListener("click", () => {
+      dialog.close();
+      });
   }
 }
-
 
 // Takes the results from getAPI and displays a card for each result with the title, release date, and poster
 async function displayResults(results) {
